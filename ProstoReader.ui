@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>950</width>
+    <width>750</width>
     <height>850</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>950</width>
+    <width>750</width>
     <height>850</height>
    </size>
   </property>
@@ -137,6 +137,9 @@
        </item>
        <item alignment="Qt::AlignRight|Qt::AlignVCenter">
         <widget class="QFrame" name="freRHeader">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -224,12 +227,7 @@
              <bool>false</bool>
             </property>
             <property name="styleSheet">
-             <string notr="true">
-   
-
-
-
-</string>
+             <string notr="true"/>
             </property>
             <property name="text">
              <string/>
@@ -626,11 +624,11 @@
              <set>Qt::ImhNone</set>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>2</number>
             </property>
-            <widget class="QWidget" name="pageRead">
+            <widget class="QWidget" name="pageTelegram">
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(224, 224, 209);</string>
+              <string notr="true"/>
              </property>
             </widget>
             <widget class="QWidget" name="pageDownload">
@@ -644,10 +642,11 @@
               <enum>Qt::NoFocus</enum>
              </property>
             </widget>
-            <widget class="QWidget" name="pageTelegram">
+            <widget class="QWidget" name="pageRead">
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">background-color: rgb(224, 224, 209);</string>
              </property>
+             <layout class="QVBoxLayout" name="verticalLayout_6"/>
             </widget>
            </widget>
           </item>

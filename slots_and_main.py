@@ -2,6 +2,8 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from prosto_reader import *
+from poppler import load_from_file, PageRenderer
+
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -37,6 +39,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         size_grip = QtWidgets.QSizeGrip(self)
         self.horizontalLayout_5.addWidget(size_grip, 0, QtCore.Qt.AlignBottom | QtCore.Qt.AlignRight)
 
+        self.btnFolder.clicked.connect(self.evt_open_folder)
+
+
+        self.verticalLayout_6.addWidget(Qpi)
+
+
+
     ###########################################################################
     # Методы обработки нажантия на левую кнопку мыши при наведении ее на
     # freMainHeader для перемещения по экрану
@@ -68,6 +77,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.showMaximized()
             self.btnRestore.setIcon(QtGui.QIcon("Icons/icons8-восстановить-окно-64.png"))
+
+    def evt_open_folder(self):
+        res = QFileDialog.getOpenFileName(self, 'Open File', '/home/oleg/Рабочий стол', 'PDF file (*.pdf)')
+        a, b = res
+
+        pdf_document = load_from_file(a)
+        page_1 = pdf_document.create_page(0)
+        info = pdf_document.infos()
+        print(info)
+        page = pdf_document.pages
+        print(page)
+        page_label = pdf_document.label
+        print(page_label)
+
+
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)         # создание приложения
