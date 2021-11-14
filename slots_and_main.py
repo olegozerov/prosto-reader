@@ -1,8 +1,11 @@
 import sys
+
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from prosto_reader import *
-from poppler import load_from_file, PageRenderer
+from poppler import *
+
 
 
 
@@ -10,6 +13,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
+        self.qImg = QImage()
         ###########################################################################
         # Скрыть стандарное окно
         ###########################################################################
@@ -42,7 +46,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btnFolder.clicked.connect(self.evt_open_folder)
 
 
-        self.verticalLayout_6.addWidget(Qpi)
+
 
 
 
@@ -67,6 +71,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         delta = event.pos() - self.old_pos
         self.move(self.pos() + delta)
 
+
+
     ###########################################################################
     # Метод обработки кнопки сворачивания и разворачивания окна
     ###########################################################################
@@ -78,21 +84,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.showMaximized()
             self.btnRestore.setIcon(QtGui.QIcon("Icons/icons8-восстановить-окно-64.png"))
 
+
+
     def evt_open_folder(self):
         res = QFileDialog.getOpenFileName(self, 'Open File', '/home/oleg/Рабочий стол', 'PDF file (*.pdf)')
         a, b = res
+        print(a)
+
 
         pdf_document = load_from_file(a)
         page_1 = pdf_document.create_page(0)
-        info = pdf_document.infos()
-        print(info)
-        page = pdf_document.pages
-        print(page)
-        page_label = pdf_document.label
-        print(page_label)
+
+        page_1_text = page_1.text()
+        print(page_1_text)
+
+
+        renderer = PageRenderer()
+        image = renderer.render_page(page_1)
+        #image_data = image.data
+        image_data1 = image.supported_image_formats()
+        print(image_data1)
+        print(image.format)
 
 
 
+
+        renderImg = QImage(image.data, image.width, image.height, image.bytes_per_row, QImage.Format_ARGB32)
+        self.lblPage.setPixmap(QPixmap.fromImage(renderImg))
 
 
 if __name__ == '__main__':
