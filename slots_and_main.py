@@ -16,6 +16,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.qImg = QImage()
         self.path_open_file = None               # Путь к открытию файла
         self.mouse_right_button_flag = False
+        self.page_counter = 0
         ###########################################################################
         # Скрыть стандарное окно
         ###########################################################################
@@ -49,9 +50,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 
-
-
-
     ###########################################################################
     # Методы обработки нажантия на левую кнопку мыши при наведении ее на
     # freMainHeader для перемещения по экрану
@@ -62,13 +60,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.freMainHeader.underMouse():                # Проверяем находится ли курсор на freMainHeader
             if event.button() == Qt.LeftButton:
                 self.old_pos = event.pos()
-        elif event.button() == Qt.RigtButton:
-            self.mouse_right_button_flag = True
+        elif self.lblPage.underMouse():
+            if event.button() == Qt.RightButton:
+                self.mouse_right_button_flag = True
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.old_pos = None
-        elif event.button() == Qt.RigtButton:
+        elif event.button() == Qt.RightButton:
             self.mouse_right_button_flag = False
 
     def mouseMoveEvent(self, event):
@@ -94,6 +93,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def evt_open_folder(self):
         file_path = QFileDialog.getOpenFileName(self, 'Open File', '/home/oleg/Рабочий стол', 'PDF file (*.pdf)')
         self.path_open_file, _ = file_path
+        self.load_pdf_from_file(self.path_open_file)
 
     def load_pdf_from_file(self, path):
         pdf_document = load_from_file(path)
@@ -109,16 +109,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def wheelEvent(self, event):
         self.load_pdf_from_file(self.path_open_file)
         evt_mouse = event.angleDelta().y() / 8
-        if self.lblPage.underMouse() and
-
-
-        if self.lblPage.underMouse() and evt_mouse > 0:
-            self.page_counter += 1
-            print(self.page_counter)
-        elif self.lblPage.underMouse() and evt_mouse < 0:
-            if self.page_counter >= 1:
+        if self.mouse_right_button_flag:
+            if evt_mouse >= 0:
+                self.page_counter += 1
+            elif evt_mouse < 0 and self.page_counter >= 1:
                 self.page_counter -= 1
-                print(self.page_counter)
 
 
 

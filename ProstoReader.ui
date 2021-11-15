@@ -650,7 +650,7 @@
               <item>
                <widget class="QLabel" name="lblPage">
                 <property name="text">
-                 <string>TextLabel</string>
+                 <string>Откройте файл</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>

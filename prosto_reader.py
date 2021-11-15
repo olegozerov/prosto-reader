@@ -321,5 +321,5 @@ class Ui_MainWindow(object):
         self.btnSearch.setToolTip(_translate("MainWindow", "Search"))
         self.btnProfile.setToolTip(_translate("MainWindow", "Login"))
         self.btnInformation.setToolTip(_translate("MainWindow", "Information"))
-        self.lblPage.setText(_translate("MainWindow", "TextLabel"))
+        self.lblPage.setText(_translate("MainWindow", "Откройте файл"))
         self.lblVersion.setText(_translate("MainWindow", "  Ver. 1.0"))
