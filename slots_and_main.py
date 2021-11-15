@@ -14,6 +14,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)
         self.qImg = QImage()
+        self.path_open_file = None               # Путь к открытию файла
+        self.mouse_right_button_flag = False
         ###########################################################################
         # Скрыть стандарное окно
         ###########################################################################
@@ -60,18 +62,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.freMainHeader.underMouse():                # Проверяем находится ли курсор на freMainHeader
             if event.button() == Qt.LeftButton:
                 self.old_pos = event.pos()
+        elif event.button() == Qt.RigtButton:
+            self.mouse_right_button_flag = True
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.old_pos = None
+        elif event.button() == Qt.RigtButton:
+            self.mouse_right_button_flag = False
 
     def mouseMoveEvent(self, event):
         if not self.old_pos:
             return
         delta = event.pos() - self.old_pos
         self.move(self.pos() + delta)
-
-
 
     ###########################################################################
     # Метод обработки кнопки сворачивания и разворачивания окна
@@ -84,33 +88,40 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.showMaximized()
             self.btnRestore.setIcon(QtGui.QIcon("Icons/icons8-восстановить-окно-64.png"))
 
-
-
+    ###########################################################################
+    # Метод обработки доступа к файлу по нажатии кнопки Folder
+    ###########################################################################
     def evt_open_folder(self):
-        res = QFileDialog.getOpenFileName(self, 'Open File', '/home/oleg/Рабочий стол', 'PDF file (*.pdf)')
-        a, b = res
-        print(a)
+        file_path = QFileDialog.getOpenFileName(self, 'Open File', '/home/oleg/Рабочий стол', 'PDF file (*.pdf)')
+        self.path_open_file, _ = file_path
 
+    def load_pdf_from_file(self, path):
+        pdf_document = load_from_file(path)
+        page_render = pdf_document.create_page(self.page_counter)
+        self.renderer_pdf(page_render)
 
-        pdf_document = load_from_file(a)
-        page_1 = pdf_document.create_page(0)
-
-        page_1_text = page_1.text()
-        print(page_1_text)
-
-
+    def renderer_pdf(self, page_):
         renderer = PageRenderer()
-        image = renderer.render_page(page_1)
-        #image_data = image.data
-        image_data1 = image.supported_image_formats()
-        print(image_data1)
-        print(image.format)
+        image = renderer.render_page(page_)
+        render_img = QImage(image.data, image.width, image.height, image.bytes_per_row, QImage.Format_ARGB32)
+        self.lblPage.setPixmap(QPixmap.fromImage(render_img))
+
+    def wheelEvent(self, event):
+        self.load_pdf_from_file(self.path_open_file)
+        evt_mouse = event.angleDelta().y() / 8
+        if self.lblPage.underMouse() and
+
+
+        if self.lblPage.underMouse() and evt_mouse > 0:
+            self.page_counter += 1
+            print(self.page_counter)
+        elif self.lblPage.underMouse() and evt_mouse < 0:
+            if self.page_counter >= 1:
+                self.page_counter -= 1
+                print(self.page_counter)
 
 
 
-
-        renderImg = QImage(image.data, image.width, image.height, image.bytes_per_row, QImage.Format_ARGB32)
-        self.lblPage.setPixmap(QPixmap.fromImage(renderImg))
 
 
 if __name__ == '__main__':
