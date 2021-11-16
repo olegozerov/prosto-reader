@@ -48,8 +48,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.btnFolder.clicked.connect(self.evt_open_folder)
 
-
-
     ###########################################################################
     # Методы обработки нажантия на левую кнопку мыши при наведении ее на
     # freMainHeader для перемещения по экрану
@@ -60,7 +58,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.freMainHeader.underMouse():                # Проверяем находится ли курсор на freMainHeader
             if event.button() == Qt.LeftButton:
                 self.old_pos = event.pos()
-        elif self.lblPage.underMouse():
+        elif self.lblRenderPage.underMouse():
             if event.button() == Qt.RightButton:
                 self.mouse_right_button_flag = True
 
@@ -98,13 +96,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def load_pdf_from_file(self, path):
         pdf_document = load_from_file(path)
         page_render = pdf_document.create_page(self.page_counter)
+        pages_in_book = pdf_document.pages
+        self.lblPages.setText(str(pages_in_book))
+        self.liedPage.setText(str(self.page_counter))
         self.renderer_pdf(page_render)
+
+
 
     def renderer_pdf(self, page_):
         renderer = PageRenderer()
         image = renderer.render_page(page_)
         render_img = QImage(image.data, image.width, image.height, image.bytes_per_row, QImage.Format_ARGB32)
-        self.lblPage.setPixmap(QPixmap.fromImage(render_img))
+        self.lblRenderPage.setPixmap(QPixmap.fromImage(render_img))
 
     def wheelEvent(self, event):
         self.load_pdf_from_file(self.path_open_file)
