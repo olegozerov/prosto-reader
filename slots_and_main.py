@@ -51,11 +51,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         size_grip = QtWidgets.QSizeGrip(self)
         self.horizontalLayout_5.addWidget(size_grip, 0, QtCore.Qt.AlignBottom | QtCore.Qt.AlignRight)
 
+        ###########################################################################
+        # Загрузить файл из Folder
+        ###########################################################################
         self.btnFolder.clicked.connect(self.evt_open_folder_and_load_file)
 
+        ###########################################################################
+        # Сигнал завершения редактирования QLineEdit
+        ###########################################################################
+        self.liedPage.returnPressed.connect(self.evt_set_current_page)
+
     ###########################################################################
-    # Методы обработки нажантия на левую кнопку мыши при наведении ее на
-    # freMainHeader для перемещения по экрану
+    # Методы обработки кнопок и колесика мыши
     ###########################################################################
         self.old_pos = None
 
@@ -79,6 +86,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         delta = event.pos() - self.old_pos
         self.move(self.pos() + delta)
 
+    def wheelEvent(self, event):
+        evt_mouse = event.angleDelta().y() / 8
+        if self.mouse_right_button_flag and self.path_open_file:
+            self.show_book()
+            if evt_mouse >= 0 and self.current_page < self.number_page-1:
+                self.current_page += 1
+            elif evt_mouse < 0 and self.current_page >= 1:
+                self.current_page -= 1
+
     ###########################################################################
     # Метод обработки кнопки сворачивания и разворачивания окна
     ###########################################################################
@@ -99,26 +115,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.current_page = 0
         self.show_book()
 
+    def evt_set_current_page(self):
+        if self.path_open_file:
+            self.current_page = int(self.liedPage.text())
+            self.show_book()
+
     def show_book(self):
         if '.pdf' in self.path_open_file:
             read = ReadPDF(self.current_page, self.path_open_file)
 
             self.number_page = read.get_number_of_pages()
-            self.lblPages.setText(str(self.number_page))
+            self.lblPages.setText(str(self.number_page - 1))
 
+            self.liedPage.setReadOnly(False)
             self.liedPage.setText(str(self.current_page))
+            self.liedPage.setValidator(QIntValidator(0, self.number_page - 1))
 
             image = read.get_image()
             self.lblRenderPage.setPixmap(QPixmap.fromImage(image))
-
-    def wheelEvent(self, event):
-        evt_mouse = event.angleDelta().y() / 8
-        if self.mouse_right_button_flag and self.path_open_file:
-            self.show_book()
-            if evt_mouse >= 0 and self.current_page < self.number_page:
-                self.current_page += 1
-            elif evt_mouse < 0 and self.current_page >= 1:
-                self.current_page -= 1
 
 
 if __name__ == '__main__':
