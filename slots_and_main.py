@@ -110,9 +110,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.lblRenderPage.setPixmap(QPixmap.fromImage(render_img))
 
     def wheelEvent(self, event):
-        self.load_pdf_from_file(self.path_open_file)
         evt_mouse = event.angleDelta().y() / 8
-        if self.mouse_right_button_flag:
+        if self.mouse_right_button_flag and self.path_open_file:
+            self.load_pdf_from_file(self.path_open_file)
             if evt_mouse >= 0:
                 self.page_counter += 1
             elif evt_mouse < 0 and self.page_counter >= 1:
