@@ -4,19 +4,24 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from prosto_reader import *
-from poppler import *
-
-
+from render_pdf import *
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
-        self.qImg = QImage()
+
+        # Counters
+        self.number_page = 0
+        self.current_page = 0
+
+        # Another
         self.path_open_file = None               # Путь к открытию файла
+
+        # Flags
         self.mouse_right_button_flag = False
-        self.page_counter = 0
+
         ###########################################################################
         # Скрыть стандарное окно
         ###########################################################################
@@ -46,7 +51,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         size_grip = QtWidgets.QSizeGrip(self)
         self.horizontalLayout_5.addWidget(size_grip, 0, QtCore.Qt.AlignBottom | QtCore.Qt.AlignRight)
 
-        self.btnFolder.clicked.connect(self.evt_open_folder)
+        self.btnFolder.clicked.connect(self.evt_open_folder_and_load_file)
 
     ###########################################################################
     # Методы обработки нажантия на левую кнопку мыши при наведении ее на
@@ -88,38 +93,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     ###########################################################################
     # Метод обработки доступа к файлу по нажатии кнопки Folder
     ###########################################################################
-    def evt_open_folder(self):
-        file_path = QFileDialog.getOpenFileName(self, 'Open File', '/home/oleg/Рабочий стол', 'PDF file (*.pdf)')
-        self.path_open_file, _ = file_path
-        self.load_pdf_from_file(self.path_open_file)
+    def evt_open_folder_and_load_file(self):
+        self.path_open_file, _ = QFileDialog.getOpenFileName(self, 'Open File', '/home/oleg/Рабочий стол',
+                                                             'PDF file (*.pdf)')
+        self.current_page = 0
+        self.show_book()
 
-    def load_pdf_from_file(self, path):
-        pdf_document = load_from_file(path)
-        page_render = pdf_document.create_page(self.page_counter)
-        pages_in_book = pdf_document.pages
-        self.lblPages.setText(str(pages_in_book))
-        self.liedPage.setText(str(self.page_counter))
-        self.renderer_pdf(page_render)
+    def show_book(self):
+        if '.pdf' in self.path_open_file:
+            read = ReadPDF(self.current_page, self.path_open_file)
 
+            self.number_page = read.get_number_of_pages()
+            self.lblPages.setText(str(self.number_page))
 
+            self.liedPage.setText(str(self.current_page))
 
-    def renderer_pdf(self, page_):
-        renderer = PageRenderer()
-        image = renderer.render_page(page_)
-        render_img = QImage(image.data, image.width, image.height, image.bytes_per_row, QImage.Format_ARGB32)
-        self.lblRenderPage.setPixmap(QPixmap.fromImage(render_img))
+            image = read.get_image()
+            self.lblRenderPage.setPixmap(QPixmap.fromImage(image))
 
     def wheelEvent(self, event):
         evt_mouse = event.angleDelta().y() / 8
         if self.mouse_right_button_flag and self.path_open_file:
-            self.load_pdf_from_file(self.path_open_file)
-            if evt_mouse >= 0:
-                self.page_counter += 1
-            elif evt_mouse < 0 and self.page_counter >= 1:
-                self.page_counter -= 1
-
-
-
+            self.show_book()
+            if evt_mouse >= 0 and self.current_page < self.number_page:
+                self.current_page += 1
+            elif evt_mouse < 0 and self.current_page >= 1:
+                self.current_page -= 1
 
 
 if __name__ == '__main__':
@@ -130,4 +129,3 @@ if __name__ == '__main__':
 
 
 """pyuic5 ProstoReader.ui -o prosto_reader.py"""
-
