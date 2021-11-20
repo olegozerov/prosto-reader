@@ -1,10 +1,12 @@
 import sys
 
+import PyQt5.QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from prosto_reader import *
 from render_pdf import *
+
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -49,7 +51,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Настройка изменения окна, установка метки в правый нижний угол
         ###########################################################################
         size_grip = QtWidgets.QSizeGrip(self)
-        self.horizontalLayout_5.addWidget(size_grip, 0, QtCore.Qt.AlignBottom | QtCore.Qt.AlignRight)
+        self.verticalLayout_2.addWidget(size_grip, 0, QtCore.Qt.AlignBottom | QtCore.Qt.AlignRight)
 
         ###########################################################################
         # Загрузить файл из Folder
@@ -89,11 +91,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def wheelEvent(self, event):
         evt_mouse = event.angleDelta().y() / 8
         if self.mouse_right_button_flag and self.path_open_file:
-            self.show_book()
             if evt_mouse >= 0 and self.current_page < self.number_page-1:
                 self.current_page += 1
+                self.show_book()
+                print(self.current_page)
             elif evt_mouse < 0 and self.current_page >= 1:
                 self.current_page -= 1
+                self.show_book()
+                print(self.current_page)
 
     ###########################################################################
     # Метод обработки кнопки сворачивания и разворачивания окна
@@ -133,6 +138,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             image = read.get_image()
             self.lblRenderPage.setPixmap(QPixmap.fromImage(image))
+
+
+
+    def keyPressEvent(self, event):
+        key_press = event.key()
+        if self.lblRenderPage.underMouse() and self.path_open_file:
+            if key_press == Qt.Key.Key_X and self.current_page < self.number_page-1:
+                self.current_page += 1
+                self.show_book()
+                print(self.current_page)
+            elif key_press == Qt.Key.Key_Z and self.current_page >= 1:
+                self.current_page -= 1
+                self.show_book()
+                print(self.current_page)
 
 
 if __name__ == '__main__':
