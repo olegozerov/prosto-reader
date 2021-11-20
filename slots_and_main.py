@@ -17,12 +17,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Counters
         self.number_page = 0
         self.current_page = 0
+        self.zoom_count = 7
 
         # Another
         self.path_open_file = None               # Путь к открытию файла
+        self.render_image = None
 
         # Flags
         self.mouse_right_button_flag = False
+        self.zoom_flag = False
 
         ###########################################################################
         # Скрыть стандарное окно
@@ -90,15 +93,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def wheelEvent(self, event):
         evt_mouse = event.angleDelta().y() / 8
+
         if self.mouse_right_button_flag and self.path_open_file:
             if evt_mouse >= 0 and self.current_page < self.number_page-1:
                 self.current_page += 1
                 self.show_book()
-                print(self.current_page)
             elif evt_mouse < 0 and self.current_page >= 1:
                 self.current_page -= 1
                 self.show_book()
-                print(self.current_page)
+
+        if self.zoom_flag and self.path_open_file:
+            if 0 <= evt_mouse:
+                self.zoom_count += 1
+                self.show_book()
+            elif evt_mouse < 0:
+                self.zoom_count -= 1
+                self.show_book()
 
     ###########################################################################
     # Метод обработки кнопки сворачивания и разворачивания окна
@@ -118,6 +128,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.path_open_file, _ = QFileDialog.getOpenFileName(self, 'Open File', '/home/oleg/Рабочий стол',
                                                              'PDF file (*.pdf)')
         self.current_page = 0
+        self.zoom_count = 7
         self.show_book()
 
     def evt_set_current_page(self):
@@ -136,22 +147,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.liedPage.setText(str(self.current_page))
             self.liedPage.setValidator(QIntValidator(0, self.number_page - 1))
 
-            image = read.get_image()
+            self.render_image = read.get_image()
+            image_height = self.render_image.height()
+            image_width = self.render_image.width()
+            image = self.render_image.smoothScaled(image_width * self.zoom_count / 20,
+                                                   image_height * self.zoom_count / 20)
             self.lblRenderPage.setPixmap(QPixmap.fromImage(image))
 
-
-
-    def keyPressEvent(self, event):
+    def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:
         key_press = event.key()
         if self.lblRenderPage.underMouse() and self.path_open_file:
             if key_press == Qt.Key.Key_X and self.current_page < self.number_page-1:
                 self.current_page += 1
                 self.show_book()
-                print(self.current_page)
             elif key_press == Qt.Key.Key_Z and self.current_page >= 1:
                 self.current_page -= 1
                 self.show_book()
-                print(self.current_page)
+
+            if key_press == Qt.Key.Key_Control:
+                self.zoom_flag = True
+
+    def keyReleaseEvent(self, event: QtGui.QKeyEvent) -> None:
+        key_release = event.key()
+        if key_release == Qt.Key.Key_Control:
+            self.zoom_flag = False
 
 
 if __name__ == '__main__':

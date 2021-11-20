@@ -19,7 +19,7 @@ class ReadPDF:
 
     def get_image(self):
         renderer = PageRenderer()
-        render_image = renderer.render_page(self._create_page)
+        render_image = renderer.render_page(self._create_page, xres=250, yres=250)
         image = QtGui.QImage(render_image.data, render_image.width, render_image.height,
                              render_image.bytes_per_row, QtGui.QImage.Format_ARGB32)
         return image
