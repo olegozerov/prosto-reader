@@ -150,8 +150,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.render_image = read.get_image()
             image_height = self.render_image.height()
             image_width = self.render_image.width()
-            image = self.render_image.smoothScaled(image_width * self.zoom_count / 20,
-                                                   image_height * self.zoom_count / 20)
+            image = self.render_image.smoothScaled(round(image_width * self.zoom_count / 20),
+                                                   round(image_height * self.zoom_count / 20))
             self.lblRenderPage.setPixmap(QPixmap.fromImage(image))
 
     def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:
@@ -182,19 +182,3 @@ if __name__ == '__main__':
 
 """pyuic5 ProstoReader.ui -o prosto_reader.py"""
 
-
-"""
-QScrollBar::add-line:vertical {
-background: #e0995e;
-height: 0px;
-subcontrol-position: bottom;
-subcontrol-origin: margin;
-}
-QScrollBar::sub-line:vertical {
-background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));
-height: 0 px;
-subcontrol-position: top;
-subcontrol-origin: margin;
-}
-"""
