@@ -181,3 +181,20 @@ if __name__ == '__main__':
 
 
 """pyuic5 ProstoReader.ui -o prosto_reader.py"""
+
+
+"""
+QScrollBar::add-line:vertical {
+background: #e0995e;
+height: 0px;
+subcontrol-position: bottom;
+subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));
+height: 0 px;
+subcontrol-position: top;
+subcontrol-origin: margin;
+}
+"""

@@ -333,9 +333,40 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.sllArea = QtWidgets.QScrollArea(self.pageRead)
+        self.sllArea.setStyleSheet("QScrollBar:vertical {              \n"
+"background:#e0e0d1;\n"
+"width:10px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical{\n"
+"background:#e0995e;                                \n"
+"border: 1px solid #e0995e;\n"
+"border-radius: 5px;\n"
+"}\n"
+"\n"
+"QScrollBar::add-line:vertical {\n"
+"background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
+"stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));\n"
+"height: 0 px;\n"
+"subcontrol-position: bottom;\n"
+"subcontrol-origin: margin;\n"
+"}\n"
+"\n"
+"QScrollBar::sub-line:vertical {\n"
+"background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
+"stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));\n"
+"height: 0 px;\n"
+"subcontrol-position: top;\n"
+"subcontrol-origin: margin;\n"
+"}\n"
+"\n"
+"")
         self.sllArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.sllArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.sllArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.sllArea.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.sllArea.setWidgetResizable(True)
-        self.sllArea.setAlignment(QtCore.Qt.AlignJustify|QtCore.Qt.AlignVCenter)
+        self.sllArea.setAlignment(QtCore.Qt.AlignCenter)
         self.sllArea.setObjectName("sllArea")
         self.sllAreaPage = QtWidgets.QWidget()
         self.sllAreaPage.setGeometry(QtCore.QRect(0, 0, 709, 845))
@@ -346,6 +377,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.lblRenderPage = QtWidgets.QLabel(self.sllAreaPage)
         self.lblRenderPage.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.lblRenderPage.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.lblRenderPage.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.lblRenderPage.setLineWidth(1)
         self.lblRenderPage.setAlignment(QtCore.Qt.AlignCenter)
         self.lblRenderPage.setObjectName("lblRenderPage")
         self.verticalLayout_7.addWidget(self.lblRenderPage)
