@@ -594,17 +594,16 @@
               </widget>
              </item>
              <item alignment="Qt::AlignLeft|Qt::AlignTop">
-              <widget class="QPushButton" name="btnSearch">
+              <widget class="QPushButton" name="btnTurn">
                <property name="toolTip">
-                <string>Search</string>
+                <string>Turn</string>
                </property>
                <property name="text">
                 <string/>
                </property>
                <property name="icon">
                 <iconset>
-                 <selectedon>Icons/magnifyingglass.png</selectedon>
-                </iconset>
+                 <normaloff>Icons/steeringwheel.png</normaloff>Icons/steeringwheel.png</iconset>
                </property>
                <property name="iconSize">
                 <size>

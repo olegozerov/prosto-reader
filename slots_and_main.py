@@ -1,12 +1,9 @@
 import sys
-
-import PyQt5.QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from prosto_reader import *
 from render_pdf import *
-
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -20,8 +17,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.zoom_count = 7
 
         # Another
-        self.path_open_file = None               # Путь к открытию файла
+        self.path_open_file = None  # Путь к открытию файла
         self.render_image = None
+        self.angle = 0
 
         # Flags
         self.mouse_right_button_flag = False
@@ -42,7 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btnRestore.clicked.connect(lambda: self.restore_max_or_min_window())
 
         ###########################################################################
-        # Настройка
+        # Сигналы
         ###########################################################################
         self.btnBook.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.pageRead))
 
@@ -57,7 +55,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.verticalLayout_2.addWidget(size_grip, 0, QtCore.Qt.AlignBottom | QtCore.Qt.AlignRight)
 
         ###########################################################################
-        # Загрузить файл из Folder
+        # Сигнал загрузки файла из Folder
         ###########################################################################
         self.btnFolder.clicked.connect(self.evt_open_folder_and_load_file)
 
@@ -66,13 +64,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ###########################################################################
         self.liedPage.returnPressed.connect(self.evt_set_current_page)
 
-    ###########################################################################
-    # Методы обработки кнопок и колесика мыши
-    ###########################################################################
+        ###########################################################################
+        # Сигнал для поворота изображения страницы
+        ###########################################################################
+        self.btnTurn.clicked.connect(self.evt_turn_image)
+
+        ###########################################################################
+        # Слоты обработки кнопок и колесика мыши
+        ###########################################################################
         self.old_pos = None
 
     def mousePressEvent(self, event):
-        if self.freMainHeader.underMouse():                # Проверяем находится ли курсор на freMainHeader
+        if self.freMainHeader.underMouse():  # Проверяем находится ли курсор на freMainHeader
             if event.button() == Qt.LeftButton:
                 self.old_pos = event.pos()
         elif self.lblRenderPage.underMouse():
@@ -92,10 +95,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.move(self.pos() + delta)
 
     def wheelEvent(self, event):
+        self.angle = 0
         evt_mouse = event.angleDelta().y() / 8
-
         if self.mouse_right_button_flag and self.path_open_file:
-            if evt_mouse >= 0 and self.current_page < self.number_page-1:
+            if evt_mouse >= 0 and self.current_page < self.number_page - 1:
                 self.current_page += 1
                 self.show_book()
             elif evt_mouse < 0 and self.current_page >= 1:
@@ -111,8 +114,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.show_book()
 
     ###########################################################################
-    # Метод обработки кнопки сворачивания и разворачивания окна
+    # Слоты обработки клаившь с клавиатуры
     ###########################################################################
+    def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:
+        key_press = event.key()
+        if self.lblRenderPage.underMouse() and self.path_open_file:
+            if key_press == Qt.Key.Key_X and self.current_page < self.number_page - 1:
+                self.angle = 0
+                self.current_page += 1
+                self.show_book()
+            elif key_press == Qt.Key.Key_Z and self.current_page >= 1:
+                self.angle = 0
+                self.current_page -= 1
+                self.show_book()
+
+            if key_press == Qt.Key.Key_Control:
+                self.zoom_flag = True
+
+            if key_press == Qt.Key.Key_R:
+                self.evt_turn_image()
+
+    def keyReleaseEvent(self, event: QtGui.QKeyEvent) -> None:
+        key_release = event.key()
+        if key_release == Qt.Key.Key_Control:
+            self.zoom_flag = False
+
+    ###########################################################################
+    # Слот обработки кнопки сворачивания и разворачивания окна
+    ###########################################################################
+    @QtCore.pyqtSlot()
     def restore_max_or_min_window(self):
         if self.isMaximized():
             self.showNormal()
@@ -122,8 +152,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.btnRestore.setIcon(QtGui.QIcon("Icons/icons8-восстановить-окно-64.png"))
 
     ###########################################################################
-    # Метод обработки доступа к файлу по нажатии кнопки Folder
+    # Слот обработки доступа к файлу по нажатии кнопки Folder
     ###########################################################################
+    @QtCore.pyqtSlot()
     def evt_open_folder_and_load_file(self):
         self.path_open_file, _ = QFileDialog.getOpenFileName(self, 'Open File', '/home/oleg/Рабочий стол',
                                                              'PDF file (*.pdf)')
@@ -131,11 +162,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.zoom_count = 7
         self.show_book()
 
+    ###########################################################################
+    # Слот обработки доступа к файлу по нажатии кнопки Folder
+    ###########################################################################
+    @QtCore.pyqtSlot()
     def evt_set_current_page(self):
         if self.path_open_file:
             self.current_page = int(self.liedPage.text())
             self.show_book()
 
+    ###########################################################################
+    # Слот обработки разворта страницы
+    ###########################################################################
+    @QtCore.pyqtSlot()
+    def evt_turn_image(self):
+        self.angle += 90
+        if self.angle == 360:
+            self.angle = 0
+        transform = QTransform()
+        transform.rotate(self.angle)
+        self.lblRenderPage.setPixmap(QPixmap.fromImage(self.render_image).transformed(transform))
+
+    ###########################################################################
+    # Метод обработыки и открытия изображений
+    ###########################################################################
     def show_book(self):
         if '.pdf' in self.path_open_file:
             read = ReadPDF(self.current_page, self.path_open_file)
@@ -150,35 +200,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.render_image = read.get_image()
             image_height = self.render_image.height()
             image_width = self.render_image.width()
-            image = self.render_image.smoothScaled(round(image_width * self.zoom_count / 20),
-                                                   round(image_height * self.zoom_count / 20))
-            self.lblRenderPage.setPixmap(QPixmap.fromImage(image))
-
-    def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:
-        key_press = event.key()
-        if self.lblRenderPage.underMouse() and self.path_open_file:
-            if key_press == Qt.Key.Key_X and self.current_page < self.number_page-1:
-                self.current_page += 1
-                self.show_book()
-            elif key_press == Qt.Key.Key_Z and self.current_page >= 1:
-                self.current_page -= 1
-                self.show_book()
-
-            if key_press == Qt.Key.Key_Control:
-                self.zoom_flag = True
-
-    def keyReleaseEvent(self, event: QtGui.QKeyEvent) -> None:
-        key_release = event.key()
-        if key_release == Qt.Key.Key_Control:
-            self.zoom_flag = False
+            self.render_image = self.render_image.smoothScaled(round(image_width * self.zoom_count / 20),
+                                                               round(image_height * self.zoom_count / 20))
+            self.lblRenderPage.setPixmap(QPixmap.fromImage(self.render_image))
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)         # создание приложения
-    mainWindow = MainWindow()            # создание окна GUI
-    mainWindow.show()                    # показать GUI
-    sys.exit(app.exec_())                # запускает прилоения и обработчики событий
-
+    app = QApplication(sys.argv)  # создание приложения
+    mainWindow = MainWindow()  # создание окна GUI
+    mainWindow.show()  # показать GUI
+    sys.exit(app.exec_())  # запускает прилоения и обработчики событий
 
 """pyuic5 ProstoReader.ui -o prosto_reader.py"""
-
