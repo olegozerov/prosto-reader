@@ -81,12 +81,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif self.lblRenderPage.underMouse():
             if event.button() == Qt.RightButton:
                 self.mouse_right_button_flag = True
+                self.sllArea.verticalScrollBar().setDisabled(True)
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.old_pos = None
         elif event.button() == Qt.RightButton:
             self.mouse_right_button_flag = False
+            self.sllArea.verticalScrollBar().setEnabled(True)
 
     def mouseMoveEvent(self, event):
         if not self.old_pos:
@@ -203,7 +205,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.render_image = self.render_image.smoothScaled(round(image_width * self.zoom_count / 20),
                                                                round(image_height * self.zoom_count / 20))
             self.lblRenderPage.setPixmap(QPixmap.fromImage(self.render_image))
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)  # создание приложения
