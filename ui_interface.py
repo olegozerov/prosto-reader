@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ProstoReader.ui'
+# Form implementation generated from reading ui file 'prostoreader.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -215,57 +215,28 @@ class Ui_MainWindow(object):
         self.btnFolder.setText("")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("Icons/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap("Icons/folder.png"), QtGui.QIcon.Disabled, QtGui.QIcon.Off)
         self.btnFolder.setIcon(icon3)
         self.btnFolder.setIconSize(QtCore.QSize(32, 32))
         self.btnFolder.setFlat(True)
         self.btnFolder.setObjectName("btnFolder")
         self.verticalLayout_4.addWidget(self.btnFolder)
         self.btnBook = QtWidgets.QPushButton(self.freTopTaskBar)
+        self.btnBook.setMouseTracking(False)
+        self.btnBook.setTabletTracking(False)
+        self.btnBook.setAcceptDrops(False)
         self.btnBook.setText("")
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("Icons/booklet.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnBook.setIcon(icon4)
         self.btnBook.setIconSize(QtCore.QSize(32, 32))
+        self.btnBook.setCheckable(False)
+        self.btnBook.setChecked(False)
+        self.btnBook.setAutoRepeat(False)
+        self.btnBook.setAutoDefault(False)
         self.btnBook.setFlat(True)
         self.btnBook.setObjectName("btnBook")
         self.verticalLayout_4.addWidget(self.btnBook)
-        self.btnDounload = QtWidgets.QPushButton(self.freTopTaskBar)
-        self.btnDounload.setText("")
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("Icons/download.png"), QtGui.QIcon.Selected, QtGui.QIcon.On)
-        self.btnDounload.setIcon(icon5)
-        self.btnDounload.setIconSize(QtCore.QSize(32, 32))
-        self.btnDounload.setFlat(True)
-        self.btnDounload.setObjectName("btnDounload")
-        self.verticalLayout_4.addWidget(self.btnDounload, 0, QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.btnTelegram = QtWidgets.QPushButton(self.freTopTaskBar)
-        self.btnTelegram.setText("")
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("Icons/telegram-64x64.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btnTelegram.setIcon(icon6)
-        self.btnTelegram.setIconSize(QtCore.QSize(32, 32))
-        self.btnTelegram.setFlat(True)
-        self.btnTelegram.setObjectName("btnTelegram")
-        self.verticalLayout_4.addWidget(self.btnTelegram)
-        self.btnContrast = QtWidgets.QPushButton(self.freTopTaskBar)
-        self.btnContrast.setText("")
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("Icons/contrast.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btnContrast.setIcon(icon7)
-        self.btnContrast.setIconSize(QtCore.QSize(32, 32))
-        self.btnContrast.setCheckable(False)
-        self.btnContrast.setFlat(True)
-        self.btnContrast.setObjectName("btnContrast")
-        self.verticalLayout_4.addWidget(self.btnContrast, 0, QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.btnTurn = QtWidgets.QPushButton(self.freTopTaskBar)
-        self.btnTurn.setText("")
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap("Icons/steeringwheel.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btnTurn.setIcon(icon8)
-        self.btnTurn.setIconSize(QtCore.QSize(32, 32))
-        self.btnTurn.setFlat(True)
-        self.btnTurn.setObjectName("btnTurn")
-        self.verticalLayout_4.addWidget(self.btnTurn, 0, QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.verticalLayout_3.addWidget(self.freTopTaskBar, 0, QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.freBottomTaskBar = QtWidgets.QFrame(self.freMainTaskbar)
         self.freBottomTaskBar.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -275,20 +246,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 5)
         self.verticalLayout_5.setSpacing(0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.btnProfile = QtWidgets.QPushButton(self.freBottomTaskBar)
-        self.btnProfile.setText("")
-        icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap("Icons/profle.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btnProfile.setIcon(icon9)
-        self.btnProfile.setIconSize(QtCore.QSize(32, 32))
-        self.btnProfile.setFlat(True)
-        self.btnProfile.setObjectName("btnProfile")
-        self.verticalLayout_5.addWidget(self.btnProfile, 0, QtCore.Qt.AlignBottom)
         self.btnInformation = QtWidgets.QPushButton(self.freBottomTaskBar)
         self.btnInformation.setText("")
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap("Icons/eye.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btnInformation.setIcon(icon10)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("Icons/eye.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnInformation.setIcon(icon5)
         self.btnInformation.setIconSize(QtCore.QSize(32, 32))
         self.btnInformation.setFlat(True)
         self.btnInformation.setObjectName("btnInformation")
@@ -315,16 +277,6 @@ class Ui_MainWindow(object):
         self.stackedWidget = QtWidgets.QStackedWidget(self.freWorkspace)
         self.stackedWidget.setInputMethodHints(QtCore.Qt.ImhNone)
         self.stackedWidget.setObjectName("stackedWidget")
-        self.pageTelegram = QtWidgets.QWidget()
-        self.pageTelegram.setStyleSheet("")
-        self.pageTelegram.setObjectName("pageTelegram")
-        self.stackedWidget.addWidget(self.pageTelegram)
-        self.pageDownload = QtWidgets.QWidget()
-        self.pageDownload.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        self.pageDownload.setMouseTracking(False)
-        self.pageDownload.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.pageDownload.setObjectName("pageDownload")
-        self.stackedWidget.addWidget(self.pageDownload)
         self.pageRead = QtWidgets.QWidget()
         self.pageRead.setStyleSheet("background-color: rgb(224, 224, 209);")
         self.pageRead.setObjectName("pageRead")
@@ -386,6 +338,22 @@ class Ui_MainWindow(object):
         self.sllArea.setWidget(self.sllAreaPage)
         self.verticalLayout_6.addWidget(self.sllArea)
         self.stackedWidget.addWidget(self.pageRead)
+        self.pageInformation = QtWidgets.QWidget()
+        self.pageInformation.setObjectName("pageInformation")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.pageInformation)
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_8.setSpacing(0)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.txtComandInfo = QtWidgets.QTextBrowser(self.pageInformation)
+        self.txtComandInfo.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.txtComandInfo.setObjectName("txtComandInfo")
+        self.verticalLayout_8.addWidget(self.txtComandInfo)
+        self.lblInfo = QtWidgets.QLabel(self.pageInformation)
+        self.lblInfo.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.lblInfo.setAlignment(QtCore.Qt.AlignCenter)
+        self.lblInfo.setObjectName("lblInfo")
+        self.verticalLayout_8.addWidget(self.lblInfo)
+        self.stackedWidget.addWidget(self.pageInformation)
         self.verticalLayout_2.addWidget(self.stackedWidget)
         self.horizontalLayout_4.addWidget(self.freWorkspace)
         self.verticalLayout.addWidget(self.freMainWorkspace)
@@ -394,7 +362,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.mainWidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -405,11 +373,35 @@ class Ui_MainWindow(object):
         self.lblSlash.setText(_translate("MainWindow", "/"))
         self.lblPages.setText(_translate("MainWindow", "0"))
         self.btnFolder.setToolTip(_translate("MainWindow", "Folder"))
-        self.btnBook.setToolTip(_translate("MainWindow", "Read"))
-        self.btnDounload.setToolTip(_translate("MainWindow", "Download"))
-        self.btnTelegram.setToolTip(_translate("MainWindow", "Telegramm"))
-        self.btnContrast.setToolTip(_translate("MainWindow", "Contrast"))
-        self.btnTurn.setToolTip(_translate("MainWindow", "Turn"))
-        self.btnProfile.setToolTip(_translate("MainWindow", "Login"))
+        self.btnFolder.setShortcut(_translate("MainWindow", "Ctrl+O"))
+        self.btnBook.setToolTip(_translate("MainWindow", "Page book"))
+        self.btnBook.setShortcut(_translate("MainWindow", "Ctrl+P"))
         self.btnInformation.setToolTip(_translate("MainWindow", "Information"))
+        self.btnInformation.setShortcut(_translate("MainWindow", "Ctrl+I"))
         self.lblRenderPage.setText(_translate("MainWindow", "Откройте файл"))
+        self.txtComandInfo.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">R</span><span style=\" font-family:\'inherit\'; font-size:14pt; color:#0b1636;\"> - Rotate page</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'inherit\'; font-size:14pt; color:#0b1636;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'inherit\'; font-size:14pt; color:#0b1636;\">Z and X or </span><a name=\"tw-target-text\"></a><span style=\" font-family:\'inherit\'; font-size:14pt; color:#000000;\">R</span><span style=\" font-family:\'inherit\'; font-size:14pt; color:#000000;\">ight mouse button + wheel - Page navigation</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'inherit\'; font-size:14pt; color:#000000;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'inherit\'; font-size:14pt; color:#000000;\">Ctrl + wheel - Zoom</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'inherit\'; font-size:14pt; color:#000000;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'inherit\'; font-size:14pt; color:#000000;\">Ctrl + O - Open file</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'inherit\'; font-size:14pt; color:#000000;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'inherit\'; font-size:14pt; color:#000000;\">Ctrl + I - Information</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'inherit\'; font-size:14pt; color:#000000;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'inherit\'; font-size:14pt; color:#000000;\">Ctrl + P - Book page</span></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'inherit\'; font-size:14pt; color:#000000;\"><br /></p>\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'inherit\'; font-size:14pt; color:#0b1636;\"><br /></p></body></html>"))
+        self.lblInfo.setText(_translate("MainWindow", "Open project for read PDF. My email: ozerovoleg92@gmail.com"))
